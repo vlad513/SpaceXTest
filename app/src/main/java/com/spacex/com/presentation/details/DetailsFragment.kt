@@ -12,10 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.spacex.com.R
-
 import com.spacex.com.databinding.FragmentDetailsBinding
-
-
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -47,19 +44,18 @@ class DetailsFragment : Fragment() {
                 findNavController().navigate(R.id.action_detailsFragment_to_missionsFragment)
             }
         }
-
         if (args.dock.crew.isNotEmpty()) {
             val list = args.dock.crew
             list.forEach {
-                viewModel.getCrew(it!!)
+                it?.let { it1 -> viewModel.getCrew(id = it1) }
             }
         }
 
         viewModel._crewLiveData.observe(viewLifecycleOwner){
-            adapter.addRepoz(it!!)
+            it?.let { it1 -> adapter.addRepoz(repoz = it1) }
         }
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(owner = this) {
             findNavController().navigate(R.id.action_detailsFragment_to_missionsFragment)
         }
     }

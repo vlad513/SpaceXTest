@@ -28,10 +28,10 @@ class MissionsAdapter(private var callback1: (DocksModelDomain) -> Unit) :
             TvName.text = "Name: " + repoz.name.toString()
             TvCoresFlight.text = "Core.Flight: " + repoz.cores.first()?.flight
             TvSuccess.text = "Success: " + repoz.success
-            if (repoz.date_utc.isNullOrEmpty()) {
+            if (repoz.date_utc.toString().isNullOrEmpty()) {
             } else {
                 var dataBuff=""
-                repoz.date_utc!!.forEach {
+                repoz.date_utc?.forEach {
                     if(it == 'T'){
                         TvDate.text = "Date: $dataBuff"
                     }else{

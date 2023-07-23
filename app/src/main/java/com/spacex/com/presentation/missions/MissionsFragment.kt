@@ -29,8 +29,19 @@ class MissionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.RcView.adapter = adapter
+
+        viewModel.getLaunches()
+
         viewModel._missionsLiveData.observe(viewLifecycleOwner) {
-            adapter.addRepoz(it!!)
+            binding.buttonRefresh.visibility = View.GONE
+            it?.let { it1 -> adapter.addRepoz(it1) }
+        }
+        viewModel._failLiveData.observe(viewLifecycleOwner) {
+            binding.buttonRefresh.visibility = View.VISIBLE
+        }
+
+        binding.buttonRefresh.setOnClickListener {
+            viewModel.getLaunches()
         }
 
         val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {}

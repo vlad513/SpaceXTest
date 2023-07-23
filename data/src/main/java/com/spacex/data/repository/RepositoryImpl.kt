@@ -15,27 +15,27 @@ class RepositoryImpl(
     private val retrofitCreateRequest: RetrofitCreateRequest,
     private val ioDispatcher: CoroutineDispatcher
 ) : Repository {
-    override suspend fun getLaunches(): Result<List<DocksModelDomain>> {
+    override suspend fun getLaunches(): Result<List<DocksModelDomain>?> {
         return withContext(ioDispatcher) {
             try {
                 Result.Success(
-                    mapLaunch(
-                        docs = retrofitCreateRequest.create.getLaunches().body()!!
-                    )
+                    retrofitCreateRequest.create.getLaunches().body()?.let {
+                        mapLaunch(
+                            docs = it
+                        )
+                    }
                 )
             } catch (e: java.lang.Exception) {
                 Result.Error(Exception("Error"))
             }
         }
-
-
     }
 
-    override suspend fun getCrew(id: String): Result<CrewModelDomain> {
+    override suspend fun getCrew(id: String): Result<CrewModelDomain?> {
         return withContext(ioDispatcher) {
             try {
                 Result.Success(
-                    mapCrew(crew = retrofitCreateRequest.create.getCrew(id = id).body()!!)
+                    retrofitCreateRequest.create.getCrew(id = id).body()?.let { mapCrew(crew = it) }
                 )
             } catch (e: java.lang.Exception) {
                 Result.Error(Exception("Error"))
